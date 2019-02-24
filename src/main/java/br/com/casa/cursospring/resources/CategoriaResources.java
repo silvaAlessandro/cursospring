@@ -1,29 +1,28 @@
 package br.com.casa.cursospring.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.casa.cursospring.domain.Categoria;
+import br.com.casa.cursospring.services.CategoriaService;
 
 @RestController
 @RequestMapping(value="/curso/api")
 public class CategoriaResources {
 	
-	@RequestMapping(method=RequestMethod.GET, path="/listar")
-	public List<Categoria> primeiroRest()
+	@Autowired
+	private CategoriaService service;
+	
+	@RequestMapping(method=RequestMethod.GET, value= "/{id}")
+	public ResponseEntity<?> find(@PathVariable Integer id)
 	{
-		Categoria cat1 = new Categoria(1, "Curso");
-		Categoria cat2 = new Categoria(2, "Teste");
+		Categoria cat = service.buscarByCodigo(id);
 		
-		List<Categoria> listaCategoria = new ArrayList<>();
-		listaCategoria.add(cat1);
-		listaCategoria.add(cat2);
-		
-		return listaCategoria;
+		return ResponseEntity.ok().body(cat);
 		
 	}
 
