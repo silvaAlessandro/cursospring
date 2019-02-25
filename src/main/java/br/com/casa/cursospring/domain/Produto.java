@@ -8,35 +8,45 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Entity
-public class Categoria implements Serializable {
+public class Produto implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3777776709630672132L;
+	private static final long serialVersionUID = 750022780964653481L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private Double preco;
 	
-	@ManyToMany(mappedBy="listaCategorias")
-	private List<Produto> listaProdutos = new ArrayList<Produto>();
+	@ManyToMany
+	@JoinTable
+	(
+		name="PRODUTO_CATEGORIA", 
+		joinColumns= @JoinColumn(name="produto_id"),
+		inverseJoinColumns = @JoinColumn(name="categoria_id")
+	)
+	private List<Categoria> listaCategorias = new ArrayList<Categoria>();
 
-	public Categoria() {
+	public Produto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Categoria(Integer id, String nome) {
+	public Produto(Integer id, String nome, Double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
 
 	public Integer getId() {
@@ -55,12 +65,20 @@ public class Categoria implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<Produto> getListaProdutos() {
-		return listaProdutos;
+	public Double getPreco() {
+		return preco;
 	}
 
-	public void setListaProdutos(List<Produto> listaProdutos) {
-		this.listaProdutos = listaProdutos;
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public List<Categoria> getListaCategorias() {
+		return listaCategorias;
+	}
+
+	public void setListaCategorias(List<Categoria> listaCategorias) {
+		this.listaCategorias = listaCategorias;
 	}
 
 	@Override
@@ -68,7 +86,9 @@ public class Categoria implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((listaCategorias == null) ? 0 : listaCategorias.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((preco == null) ? 0 : preco.hashCode());
 		return result;
 	}
 
@@ -80,16 +100,26 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (listaCategorias == null) {
+			if (other.listaCategorias != null)
+				return false;
+		} else if (!listaCategorias.equals(other.listaCategorias))
+			return false;
 		if (nome == null) {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
+			return false;
+		if (preco == null) {
+			if (other.preco != null)
+				return false;
+		} else if (!preco.equals(other.preco))
 			return false;
 		return true;
 	}
