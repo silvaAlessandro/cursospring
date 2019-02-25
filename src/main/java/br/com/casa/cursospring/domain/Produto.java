@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -28,6 +29,7 @@ public class Produto implements Serializable {
 	private String nome;
 	private Double preco;
 	
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable
 	(
