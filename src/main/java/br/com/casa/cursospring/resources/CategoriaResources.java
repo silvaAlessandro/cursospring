@@ -1,6 +1,7 @@
 package br.com.casa.cursospring.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,13 @@ public class CategoriaResources {
 		Categoria cat = service.buscarByCodigo(id);
 		
 		return ResponseEntity.ok().body(cat);
+		
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, path="/gerarToken")
+	public ResponseEntity<String> gerarSecretToken(@Param("nomeEmpresa") String nomeEmpresa)
+	{
+		return ResponseEntity.ok().header("BEARER", service.gerarScretToken(nomeEmpresa)).body("Token gerado com sucesso");
 		
 	}
 
